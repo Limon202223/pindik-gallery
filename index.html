@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pındık - Papağan Galerisi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            padding-top: 30px;
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .gallery-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-item-info {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .gallery-item-info h3 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .gallery-item-info p {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        /* Modal Stil */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90vh;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: zoomIn 0.3s;
+        }
+
+        @keyframes zoomIn {
+            from { transform: translate(-50%, -50%) scale(0.8); }
+            to { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .close:hover {
+            color: #bbb;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            opacity: 0.9;
+        }
+
+        .upload-section {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            color: white;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .upload-section h2 {
+            margin-bottom: 15px;
+        }
+
+        .upload-section input {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: white;
+            color: #333;
+            font-weight: bold;
+            margin: 5px;
+        }
+
+        .upload-section input:hover {
+            background: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🦜 Pındık</h1>
+            <p>Sevgili papağanımızın fotoğraf galerisi</p>
+        </header>
+
+        <div class="upload-section">
+            <h2>Pındık'ın Yeni Fotoğrafı Ekle</h2>
+            <input type="file" id="imageInput" accept="image/*" multiple>
+            <button onclick="addPhoto()">Yükle</button>
+        </div>
+
+        <div class="gallery" id="gallery">
+            <!-- Örnek fotoğraflar -->
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/280x250?text=Pındık+Foto+1" alt="Pındık">
+                <div class="gallery-item-info">
+                    <h3>Pındık Güneşte</h3>
+                    <p>Favori yerinde</p>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/280x250?text=Pındık+Foto+2" alt="Pındık">
+                <div class="gallery-item-info">
+                    <h3>Pındık Oynarken</h3>
+                    <p>Çok mutlu!</p>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/280x250?text=Pındık+Foto+3" alt="Pındık">
+                <div class="gallery-item-info">
+                    <h3>Pındık Yemek Yerken</h3>
+                    <p>Lezizo!</p>
+                </div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="https://via.placeholder.com/280x250?text=Pındık+Foto+4" alt="Pındık">
+                <div class="gallery-item-info">
+                    <h3>Pındık Uyurken</h3>
+                    <p>Tatlı bir uyku</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>💕 Pındık'ın resmi web sayfası 💕</p>
+            <p>Son güncelleme: <span id="date"></span></p>
+        </footer>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImg" alt="">
+    </div>
+
+    <script>
+        // Fotoğraflara tıklayınca büyütme
+        document.querySelectorAll('.gallery-item img').forEach(img => {
+            img.onclick = function() {
+                document.getElementById("modal").style.display = "block";
+                document.getElementById("modalImg").src = this.src;
+            }
+        });
+
+        // Modal'ı kapatma
+        function closeModal() {
+            document.getElementById("modal").style.display = "none";
+        }
+
+        // Dış alana tıklayınca kapatma
+        window.onclick = function(event) {
+            const modal = document.getElementById("modal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Fotoğraf ekleme (localStorage'da saklama)
+        function addPhoto() {
+            const input = document.getElementById('imageInput');
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const gallery = document.getElementById('gallery');
+                    const newItem = document.createElement('div');
+                    newItem.className = 'gallery-item';
+                    newItem.innerHTML = `
+                        <img src="${e.target.result}" alt="Pındık">
+                        <div class="gallery-item-info">
+                            <h3>Pındık</h3>
+                            <p>Yeni fotoğraf</p>
+                        </div>
+                    `;
+                    
+                    gallery.appendChild(newItem);
+                    
+                    // Tıklama olayı ekle
+                    newItem.querySelector('img').onclick = function() {
+                        document.getElementById("modal").style.display = "block";
+                        document.getElementById("modalImg").src = this.src;
+                    }
+                    
+                    input.value = '';
+                    alert('Fotoğraf başarıyla eklendi! 🦜');
+                }
+                
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Tarih göster
+        document.getElementById('date').textContent = new Date().toLocaleDateString('tr-TR');
+    </script>
+</body>
+</html>
