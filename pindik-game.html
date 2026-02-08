@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pindik Game</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #game { margin-top: 20px; }
+        #result { font-size: 20px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <h1>Pindik Game</h1>
+    <button id="startBtn">Start Game</button>
+    <div id="game" style="display: none;">
+        <p id="instruction">Click the button quickly!</p>
+        <button id="clickBtn">Click Me!</button>
+        <p id="timer"></p>
+        <div id="result"></div>
+    </div>
+    <script>
+        let isGameActive = false;
+        let startTime, endTime;
+
+        document.getElementById('startBtn').onclick = function() {
+            isGameActive = true;
+            startGame();
+        };
+
+        function startGame() {
+            document.getElementById('game').style.display = 'block';
+            document.getElementById('clickBtn').disabled = false;
+            document.getElementById('result').innerText = '';
+            setTimeout(endGame, Math.random() * 5000 + 1000);
+            startTime = new Date();
+            document.getElementById('instruction').innerText = 'Click the button when it appears!';
+        }
+
+        function endGame() {
+            isGameActive = false;
+            document.getElementById('clickBtn').disabled = true;
+            endTime = new Date();
+            const timeTaken = (endTime - startTime) / 1000;
+            document.getElementById('result').innerText = 'You clicked in ' + timeTaken + ' seconds!';
+        }
+
+        document.getElementById('clickBtn').onclick = function() {
+            if (isGameActive) {
+                endGame();
+            }
+        };
+    </script>
+</body>
+</html>
